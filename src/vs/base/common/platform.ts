@@ -43,7 +43,16 @@ declare let self: any;
 export const LANGUAGE_DEFAULT = 'en';
 
 // OS detection
-if (typeof process === 'object') {
+if (typeof navigator === 'object') {
+	let userAgent = navigator.userAgent;
+	_isWindows = userAgent.indexOf('Windows') >= 0;
+	_isMacintosh = userAgent.indexOf('Macintosh') >= 0;
+	_isLinux = userAgent.indexOf('Linux') >= 0;
+	_isWeb = true;
+	_locale = navigator.language;
+	_language = _locale;
+	_isQunit = !!(<any>self).QUnit;
+} else if (typeof process === 'object') {
 	_isWindows = (process.platform === 'win32');
 	_isMacintosh = (process.platform === 'darwin');
 	_isLinux = (process.platform === 'linux');
@@ -60,15 +69,6 @@ if (typeof process === 'object') {
 		}
 	}
 	_isNative = true;
-} else if (typeof navigator === 'object') {
-	let userAgent = navigator.userAgent;
-	_isWindows = userAgent.indexOf('Windows') >= 0;
-	_isMacintosh = userAgent.indexOf('Macintosh') >= 0;
-	_isLinux = userAgent.indexOf('Linux') >= 0;
-	_isWeb = true;
-	_locale = navigator.language;
-	_language = _locale;
-	_isQunit = !!(<any>self).QUnit;
 }
 
 export enum Platform {
